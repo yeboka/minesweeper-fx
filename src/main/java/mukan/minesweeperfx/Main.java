@@ -49,34 +49,39 @@ public class Main extends Application {
 
 
         //game scene
-        Text flags = new Text("Flags: ");
-        Text time = new Text("00:00");
+        StopWatch stopWatch = new StopWatch();
+        Text flags = new Text("Flags: 10");
         Button restart = new Button("\uD83D\uDE00");
         restart.setOnAction((e) -> {
-            restartGame();
+            restartGame(flags, stopWatch);
         });
 
         gamePane = new VBox();
         HBox bar = new HBox();
 
-        bar.getChildren().addAll(flags, restart, time);
+        bar.getChildren().addAll(flags, restart, stopWatch.getCurrTime());
         bar.setSpacing(50);
         bar.setAlignment(Pos.CENTER);
 
-        gameField = new GameField();
+        gameField = new GameField(flags, stopWatch);
         gameField.createField();
 
         gamePane.getChildren().addAll(bar, gameField.getField());
 
         game = new Scene(gamePane);
-        startBtn.setOnAction(e -> primaryStage.setScene(game));
+        startBtn.setOnAction(e -> {
+            primaryStage.setScene(game);
+            stopWatch.start();
+        });
 
         stage.setScene(menu);
     }
 
-    private void restartGame() {
-        gameField = new GameField();
+    private void restartGame(Text flags, StopWatch stopWatch) {
+        gameField = new GameField(flags, stopWatch);
         gameField.createField();
+
+        stopWatch.restart();
 
         gamePane.getChildren().remove(1);
         gamePane.getChildren().add(gameField.getField());
