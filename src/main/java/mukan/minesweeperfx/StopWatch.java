@@ -32,6 +32,7 @@ public class StopWatch {
         seconds = 0;
         minutes = 0;
         currTime.setText("00:00");
+        timeline.play();
     }
 
     public Text getCurrTime () {
